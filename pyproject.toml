@@ -7,7 +7,11 @@ authors = [
     { name = "jboyxs", email = "3408970170@qq.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "isaaclab==3.0.0",
+    "torch==2.11.0",
+    "torchvision==0.26.0",
+]
 
 [project.scripts]
 peginsert = "peginsert:main"
@@ -15,3 +19,16 @@ peginsert = "peginsert:main"
 [build-system]
 requires = ["uv_build>=0.13.7,<0.14.0"]
 build-backend = "uv_build"
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu130" }
+torchvision = { index = "pytorch-cu130" }
+isaaclab = { index = "nvidia" }
+
+[[tool.uv.index]]
+name = "nvidia"
+url = "https://pypi.nvidia.com/"
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
