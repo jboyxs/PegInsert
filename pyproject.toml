@@ -6,9 +6,9 @@ readme = "README.md"
 authors = [
     { name = "jboyxs", email = "3408970170@qq.com" }
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.13"
 dependencies = [
-    "isaaclab==3.0.0",
+    "isaaclab[isaacsim]==3.0.0",
     "torch==2.11.0",
     "torchvision==0.26.0",
 ]
@@ -16,9 +16,30 @@ dependencies = [
 [project.scripts]
 peginsert = "peginsert:main"
 
+[project.entry-points."isaaclab.tasks"]
+peginsert = "peginsert.tasks"
+
 [build-system]
 requires = ["uv_build>=0.13.7,<0.14.0"]
 build-backend = "uv_build"
+
+[tool.uv]
+# Tested Isaac Lab 3.0 / Isaac Sim 6.2 dependency overrides:
+# https://github.com/isaac-sim/IsaacLab/blob/v3.0.0/tools/wheel_builder/uv-overrides.txt
+override-dependencies = [
+    "numpy>=2",
+    "mujoco~=3.12.0",
+    "mujoco-warp~=3.12.0",
+    "newton[sim]==1.6.1",
+    "newton-usd-schemas>=0.5.0",
+    "usd-exchange==3.0.1",
+    "usd-optimize~=1.3.1",
+    "torch==2.11.0",
+    "torchvision==0.26.0",
+    "fsspec>=2026.6.0",
+    "packaging>=20,<27",
+    "urllib3>=2.8.0",
+]
 
 [tool.uv.sources]
 torch = { index = "pytorch-cu130" }

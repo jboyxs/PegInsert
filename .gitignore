@@ -20,6 +20,7 @@ dist/
 .eggs/
 
 # Test, coverage, and tooling output
+logs/
 .coverage
 .coverage.*
 htmlcov/
