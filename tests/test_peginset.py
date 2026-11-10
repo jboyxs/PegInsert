@@ -35,6 +35,7 @@ class PegInsetTests(unittest.TestCase):
                     self.assertTrue(cfg.scene.fixed_asset.spawn.usd_path.endswith("/rectangular_hole_4mm.usd"))
                     self.assertTrue(cfg.scene.held_asset.spawn.usd_path.endswith("/rectangular_peg_4mm.usd"))
                     self.assertEqual(agent.experiment_name, "peg_inset")
+                    self.assertEqual(cfg.rewards.assembly_progress.params["gamma"], agent.algorithm.gamma)
                     reset = cfg.events.reset_strategies.params
                     self.assertEqual(reset["reset_assets"], ["nistboard", "fixed_asset", "held_asset", "robot"])
                     choices = reset["reset_term"].params["terms"]["reset_strategies"].params["terms"]

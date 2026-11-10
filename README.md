@@ -32,7 +32,11 @@ uv run isaaclab play --task PegInset --rl_library rsl_rl --checkpoint <checkpoin
 
 也可用 `uv run peginsert train ...` 调用同一 CLI。默认物理后端仍为上游的 `isaacsim_physx`，需要安装并配置 Isaac Sim；支持以 `physics=physx` 或 `physics=newton_mjwarp` 选择其他后端，运行时也需要对应依赖。USD 资产仍来自 `ISAACLAB_NUCLEUS_DIR/Factory`。
 
-保留上游的动作、观测历史、奖励、成功阈值、物理参数、重置课程与 `play_mode()` 行为；环境实现不导入 `isaaclab_tasks.contrib.nist`，只复用 Isaac Lab 的通用接口和任务配置工具。移植代码保留原 BSD-3-Clause 版权声明，许可见 `src/peginsert/LICENSE-ISAACLAB`。
+默认奖励包含成功奖励、动作幅度、动作变化、关节力矩和异常终止惩罚，以及稠密奖励 `assembly_progress`。新增项的实际单步贡献为 `2 × (γΦ(s下一步) − Φ(s当前))`，返回值已补偿奖励管理器的步长缩放。势函数为 `Φ = 0.30A + 0.25B + 0.45D`，其中 `A` 为接近孔口分数（距离尺度 50 mm），`B` 为横向与倾角对正分数（尺度 5 mm 和 0.1 rad），`D` 为对正分数乘以插入比例（孔口至装配位置 9 mm）。实现见 `mdp/rewards.py`，参数见 `PegInsetRewardsCfg.assembly_progress`。
+
+成功或失败终止时，下一状态的势值取零以消除终点残余，因此终止步的塑形项可能为负。无限时域模式下的超时截断保留势值，用于价值自举。每次 reset 从新初态的实时几何初始化历史势值。PPO 与塑形默认共用 `task_cfg.DISCOUNT_FACTOR = 0.995`；运行时覆盖 PPO 的 `agent.algorithm.gamma` 时，应同步设置 `env.rewards.assembly_progress.params.gamma`。设 `env.rewards.assembly_progress.weight=0` 可关闭新增项。
+
+动作、观测历史、成功阈值、物理参数、重置课程与 `play_mode()` 来自上游；环境实现不导入 `isaaclab_tasks.contrib.nist`，只复用 Isaac Lab 的通用接口和任务配置工具。移植代码保留原 BSD-3-Clause 版权声明，许可见 `src/peginsert/LICENSE-ISAACLAB`。
 
 无需启动仿真的验证：
 

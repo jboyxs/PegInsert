@@ -79,6 +79,21 @@ class progress_context(ManagerTermBase):
         held_asset_offset: Offset,
         assembly_profile: AssemblyProfileCfg,
     ) -> torch.Tensor:
+        xy_distance, z_distance, euler_xy_diff = self.alignment_errors()
+        self.xy_distance[:] = xy_distance
+        self.z_distance[:] = z_distance
+        self.euler_xy_diff[:] = euler_xy_diff
+
+        self.orientation_aligned[:] = self.euler_xy_diff < 0.025
+        self.position_centered[:] = self.xy_distance < 0.0025
+        self.z_distance_reached[:] = self.z_distance < self.success_threshold
+        self.is_success[:] = self.orientation_aligned & self.position_centered & self.z_distance_reached
+        env.extras["successes"] = self.is_success
+
+        return self.dummy_false_tensor
+
+    def alignment_errors(self) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        """Read live geometry, including reset poses before the next termination check."""
         held_asset_alignment_pos_w, held_asset_alignment_quat_w = self.held_asset_offset.apply(self.held_asset)
         fixed_asset_alignment_pos_w, fixed_asset_alignment_quat_w = self.profile.assembled_offset.apply(
             self.fixed_asset
@@ -93,17 +108,11 @@ class progress_context(ManagerTermBase):
         )
 
         e_x, e_y, _ = math_utils.euler_xyz_from_quat(held_asset_in_fixed_asset_frame_quat)
-        self.euler_xy_diff[:] = math_utils.wrap_to_pi(e_x).abs() + math_utils.wrap_to_pi(e_y).abs()
-        self.xy_distance[:] = torch.norm(held_asset_in_fixed_asset_frame_pos[:, 0:2], dim=1)
-        self.z_distance[:] = held_asset_in_fixed_asset_frame_pos[:, 2]
-
-        self.orientation_aligned[:] = self.euler_xy_diff < 0.025
-        self.position_centered[:] = self.xy_distance < 0.0025
-        self.z_distance_reached[:] = self.z_distance < self.success_threshold
-        self.is_success[:] = self.orientation_aligned & self.position_centered & self.z_distance_reached
-        env.extras["successes"] = self.is_success
-
-        return self.dummy_false_tensor
+        return (
+            torch.norm(held_asset_in_fixed_asset_frame_pos[:, 0:2], dim=1),
+            held_asset_in_fixed_asset_frame_pos[:, 2],
+            math_utils.wrap_to_pi(e_x).abs() + math_utils.wrap_to_pi(e_y).abs(),
+        )
 
 
 def success_termination(env: ManagerBasedRLEnv, context: str = "progress_context") -> torch.Tensor:

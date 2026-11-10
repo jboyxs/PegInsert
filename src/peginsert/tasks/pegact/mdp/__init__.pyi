@@ -18,6 +18,7 @@ __all__ = [
     "target_asset_pose_in_root_asset_frame",
     "asset_link_velocity_in_root_asset_frame",
     "success_reward",
+    "assembly_potential_reward",
     "action_rate_l2_clamped",
     "action_l2_clamped",
     "out_of_bound",
@@ -45,7 +46,7 @@ from .observations import (
     target_asset_pose_in_root_asset_frame,
 )
 from .rewards import action_l2_clamped, action_rate_l2_clamped
-from .rewards import success_reward
+from .rewards import assembly_potential_reward, success_reward
 from .terminations import out_of_bound
 from .terminations import progress_context, success_termination
 from peginsert.utils import CollisionAnalyzerCfg

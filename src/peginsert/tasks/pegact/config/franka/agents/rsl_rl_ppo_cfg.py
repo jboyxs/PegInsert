@@ -7,6 +7,8 @@ from isaaclab.utils import configclass
 
 from isaaclab_rl.rsl_rl import RslRlMLPModelCfg, RslRlOnPolicyRunnerCfg, RslRlPpoAlgorithmCfg
 
+from peginsert.tasks.pegact.config.franka.task_cfg import DISCOUNT_FACTOR
+
 
 @configclass
 class PegInsetPPORunnerCfg(RslRlOnPolicyRunnerCfg):
@@ -36,7 +38,7 @@ class PegInsetPPORunnerCfg(RslRlOnPolicyRunnerCfg):
         num_mini_batches=4,
         learning_rate=1.0e-4,
         schedule="adaptive",
-        gamma=0.995,
+        gamma=DISCOUNT_FACTOR,
         lam=0.90,
         desired_kl=0.01,
         max_grad_norm=1.0,

@@ -21,6 +21,7 @@ from peginsert.tasks.pegact import mdp
 from peginsert.tasks.pegact.config.franka.task_cfg import (
     ASSEMBLY_TIP,
     ASSEMBLY_PROFILE,
+    DISCOUNT_FACTOR,
     HELD_ASSET_ALIGN_OFFSET,
 )
 from peginsert.tasks.pegact.config.franka.scenes_cfg import PegInsetSceneCfg
@@ -160,6 +161,17 @@ class PegInsetRewardsCfg:
     )
     early_termination = RewTerm(func=mdp.is_terminated_term, params={"term_keys": "abnormal"}, weight=-0.01)
     success_reward = RewTerm(func=mdp.success_reward, weight=100.0)
+    assembly_progress = RewTerm(
+        func=mdp.assembly_potential_reward,
+        weight=2.0,
+        params={
+            "gamma": DISCOUNT_FACTOR,
+            "hole_height": ASSEMBLY_TIP.pos[2] - ASSEMBLY_PROFILE.segments[0].start_pose.pos[2],
+            "approach_scale": 0.05,
+            "xy_scale": 0.005,
+            "tilt_scale": 0.1,
+        },
+    )
 
 
 @configclass

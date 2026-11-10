@@ -19,6 +19,9 @@ from peginsert.tasks.pegact.assembly_profile_cfg import (
 
 FIXED_ASSET_MAP = dict(fixed_asset="rectangular_hole_4mm")
 
+# Potential shaping and PPO must use the same per-control-step discount.
+DISCOUNT_FACTOR = 0.995
+
 ASSEMBLY_TIP = kpts.RECTANGULAR_HOLE_4MM.hole_tip_offset
 
 
