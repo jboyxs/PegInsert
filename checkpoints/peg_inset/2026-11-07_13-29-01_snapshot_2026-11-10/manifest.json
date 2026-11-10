@@ -1,0 +1,461 @@
+{
+  "created_at": "2026-11-10T16:20:20.191020+08:00",
+  "source_run": "2026-11-07_13-29-01",
+  "source_commit": "09ce3aedf9ec297d6f8d0da566833e159117f2dc",
+  "repository": "jboyxs/PegInsert",
+  "branch": "codex/checkpoint-newton-20261110-12600",
+  "task": "PegInset",
+  "physics": "newton_mjwarp",
+  "num_envs": 4096,
+  "seed": 42,
+  "latest_checkpoint": "model_12600.pt",
+  "saved_iteration": 12600,
+  "additional_iterations_to_original_end": 2400,
+  "source_training_pid": 250063,
+  "checkpoints": [
+    {
+      "file": "model_0.pt",
+      "iteration": 0,
+      "bytes": 6894799,
+      "sha256": "f205edfd31bdf790b631a1deb5d9564adfee7d9ddc7b012a2821dd53c1621020"
+    },
+    {
+      "file": "model_200.pt",
+      "iteration": 200,
+      "bytes": 6895251,
+      "sha256": "202ccb525470823ea515aff7087f9fc55ab9706bcb4ada064906f6cb5ed05177"
+    },
+    {
+      "file": "model_400.pt",
+      "iteration": 400,
+      "bytes": 6895251,
+      "sha256": "4db47f323e9e3b0e6230de9aaff015fe179f2913523e81c5843dfe514dba4336"
+    },
+    {
+      "file": "model_600.pt",
+      "iteration": 600,
+      "bytes": 6895251,
+      "sha256": "bdf79a280b59f6f6a82ef7e8240b2c1f8d7e9efebe92f52c762db2b3b404183f"
+    },
+    {
+      "file": "model_800.pt",
+      "iteration": 800,
+      "bytes": 6895251,
+      "sha256": "285d6171f9120c94e0b56f2b61edb8f0ee78d9d993e9b05885485228913b8470"
+    },
+    {
+      "file": "model_1000.pt",
+      "iteration": 1000,
+      "bytes": 6895349,
+      "sha256": "c095cefcfd3b2916cbc3ca6b3353c931fa0072f701a89d24d1c2b6ded0779e48"
+    },
+    {
+      "file": "model_1200.pt",
+      "iteration": 1200,
+      "bytes": 6895349,
+      "sha256": "d5162ca858e37cc5e20a421e740476e8c30195059bd7504f3e33fbcec8ce894e"
+    },
+    {
+      "file": "model_1400.pt",
+      "iteration": 1400,
+      "bytes": 6895349,
+      "sha256": "5b8c367dcc857ff5aeea84feb7df14d6a6f49afedb59bb08233f64156dd33599"
+    },
+    {
+      "file": "model_1600.pt",
+      "iteration": 1600,
+      "bytes": 6895349,
+      "sha256": "c948ecda88a50ec83f6135df47f0b38ca7245f48c2d05d74ee5dab6469274f9e"
+    },
+    {
+      "file": "model_1800.pt",
+      "iteration": 1800,
+      "bytes": 6895349,
+      "sha256": "7a2597bf4465dc908e0fe3677145c60a24cc68ff19c407a7e8125a288d18b301"
+    },
+    {
+      "file": "model_2000.pt",
+      "iteration": 2000,
+      "bytes": 6895349,
+      "sha256": "45858d9244d001ec404a97e278558a840c5e70d74b77923ed928e0e8e849eb92"
+    },
+    {
+      "file": "model_2200.pt",
+      "iteration": 2200,
+      "bytes": 6895349,
+      "sha256": "54f66b8e340adcc7b46ac6fc3019ed44637fab9ebb43f99465385dadf20f0094"
+    },
+    {
+      "file": "model_2400.pt",
+      "iteration": 2400,
+      "bytes": 6895349,
+      "sha256": "2af836ef8d3d28a5eef5801fde769e2a48831aaf9fbf1e4711a0f0b74b9e9845"
+    },
+    {
+      "file": "model_2600.pt",
+      "iteration": 2600,
+      "bytes": 6895349,
+      "sha256": "640f5c09ee8fa47ef5175512da0fb865eca78207225a28d54dd5abf9df6be64e"
+    },
+    {
+      "file": "model_2800.pt",
+      "iteration": 2800,
+      "bytes": 6895349,
+      "sha256": "2f2b2852fbaa242a8744687f398152207c5622faea99f8b8a5b2549e48667549"
+    },
+    {
+      "file": "model_3000.pt",
+      "iteration": 3000,
+      "bytes": 6895349,
+      "sha256": "87d04a0ba5318aaad1e202d9f16241f083abe01935a0f6fdc5fc4949603309fc"
+    },
+    {
+      "file": "model_3200.pt",
+      "iteration": 3200,
+      "bytes": 6895349,
+      "sha256": "0a9bf9ab044c44059d3a67b4822335a96ff82d857e9d8788a0242db8fa84ec58"
+    },
+    {
+      "file": "model_3400.pt",
+      "iteration": 3400,
+      "bytes": 6895349,
+      "sha256": "bc0e7a9131ddfc8faeb39ba55a2ad1d7d4c08bac4c0d8d5418a6f7ee987c5230"
+    },
+    {
+      "file": "model_3600.pt",
+      "iteration": 3600,
+      "bytes": 6895349,
+      "sha256": "6164bcf5c60e489b03922c8cfd0195faee727f97d264f71afa231067b8d7b961"
+    },
+    {
+      "file": "model_3800.pt",
+      "iteration": 3800,
+      "bytes": 6895349,
+      "sha256": "def440429c3f5fa8a53f4a6385e5c859a63afd44ad9be673943f11f1c2294f74"
+    },
+    {
+      "file": "model_4000.pt",
+      "iteration": 4000,
+      "bytes": 6895349,
+      "sha256": "59b173f7cea84361899d98ac6476cff7c563b09d6ee705f57686b7b230332772"
+    },
+    {
+      "file": "model_4200.pt",
+      "iteration": 4200,
+      "bytes": 6895349,
+      "sha256": "c19ad89f35c81b9bb6e1f88d3ce84455ca97f649c1a638282b540ecb5f616695"
+    },
+    {
+      "file": "model_4400.pt",
+      "iteration": 4400,
+      "bytes": 6895349,
+      "sha256": "f5dd7f5c4bb249825af7a44a74783ab8ffb4325c4066ffdbddbfc07a26cf5465"
+    },
+    {
+      "file": "model_4600.pt",
+      "iteration": 4600,
+      "bytes": 6895349,
+      "sha256": "09ad8916bbda311663f02dd7cc55148a33f0c23453d6eb1246eec0c29bb4fd3b"
+    },
+    {
+      "file": "model_4800.pt",
+      "iteration": 4800,
+      "bytes": 6895349,
+      "sha256": "3b4451714df938d995abdff8322a2ff577d26c1511cabd365b7701600f6df6e6"
+    },
+    {
+      "file": "model_5000.pt",
+      "iteration": 5000,
+      "bytes": 6895349,
+      "sha256": "802ba4466fef5a02626f3d3d61d162e8fd4e621e2a6243cf719cc7c3806f01a8"
+    },
+    {
+      "file": "model_5200.pt",
+      "iteration": 5200,
+      "bytes": 6895349,
+      "sha256": "100dd22ed43d8186db1db2e25a3ed9706d669845dca7900665c9f35e0b04bd4f"
+    },
+    {
+      "file": "model_5400.pt",
+      "iteration": 5400,
+      "bytes": 6895349,
+      "sha256": "ddda59fc71bf6f2faa67e0e3fffb2b1c096f344035e116cb81f531ceba5374b0"
+    },
+    {
+      "file": "model_5600.pt",
+      "iteration": 5600,
+      "bytes": 6895349,
+      "sha256": "4e02877a0e88e17bcf0c2ed0b6a898335b2a6daf8d74846ec92e0e0504631939"
+    },
+    {
+      "file": "model_5800.pt",
+      "iteration": 5800,
+      "bytes": 6895349,
+      "sha256": "dc19bf0a5f6f3f0ccf9fd251afe9d1fd44936427c653c16d59d84359eb9c8518"
+    },
+    {
+      "file": "model_6000.pt",
+      "iteration": 6000,
+      "bytes": 6895349,
+      "sha256": "d87af2e24d27e676ce05ba805608c2561a00162a2cea40cd297cfd3cf124680c"
+    },
+    {
+      "file": "model_6200.pt",
+      "iteration": 6200,
+      "bytes": 6895349,
+      "sha256": "19f6178e283a22162443ba39be4ab6f7ee43c80f1920ea1adc2534ea2a765163"
+    },
+    {
+      "file": "model_6400.pt",
+      "iteration": 6400,
+      "bytes": 6895349,
+      "sha256": "b2a9e2175a0ee7c07f718f10697cfbb430fd35c0436ff652f27896f35e4ecb7b"
+    },
+    {
+      "file": "model_6600.pt",
+      "iteration": 6600,
+      "bytes": 6895349,
+      "sha256": "d40e2583cf065c1ba6fc4ca62f7af93b9973ed770f4b56fa77b125709f454e1b"
+    },
+    {
+      "file": "model_6800.pt",
+      "iteration": 6800,
+      "bytes": 6895349,
+      "sha256": "1b67b3bf416ce3fa65f512349bdde50579cbac326118147ff4ea0e8d6f72b541"
+    },
+    {
+      "file": "model_7000.pt",
+      "iteration": 7000,
+      "bytes": 6895349,
+      "sha256": "51fe651d3064fab5ecc814c08c1f2e4dfbe6c22727f231554e1b2808bf266887"
+    },
+    {
+      "file": "model_7200.pt",
+      "iteration": 7200,
+      "bytes": 6895349,
+      "sha256": "489a3972db969560e96b6c222a18dd4c58f899b8c64e3cb318a57bf71978fc9a"
+    },
+    {
+      "file": "model_7400.pt",
+      "iteration": 7400,
+      "bytes": 6895349,
+      "sha256": "c0a8fada24e31420704d93c03a23d5c30d544cd3c4665d1a5608c953c798d069"
+    },
+    {
+      "file": "model_7600.pt",
+      "iteration": 7600,
+      "bytes": 6895349,
+      "sha256": "f6f485982c44802aa51409e0a97e6bc0428dc3cd19fe68eadd8707126396ff79"
+    },
+    {
+      "file": "model_7800.pt",
+      "iteration": 7800,
+      "bytes": 6895349,
+      "sha256": "255bfafb46e755cbca1cd0dd0a2375c4d8d6dd4d88774eea962cb56d06734479"
+    },
+    {
+      "file": "model_8000.pt",
+      "iteration": 8000,
+      "bytes": 6895349,
+      "sha256": "3206e37e170ff4a2d69147b9040a8af312b7209147b9a5460db9e0fcb89b11e9"
+    },
+    {
+      "file": "model_8200.pt",
+      "iteration": 8200,
+      "bytes": 6895349,
+      "sha256": "4ce45c1011f4330441fedb69254c92aace5ebaf155a83f2b307ef9cf4488a653"
+    },
+    {
+      "file": "model_8400.pt",
+      "iteration": 8400,
+      "bytes": 6895349,
+      "sha256": "9afbc716ac5978f83a26ac8461929225b3cde30321b9791344e8c1a2c8c91cf2"
+    },
+    {
+      "file": "model_8600.pt",
+      "iteration": 8600,
+      "bytes": 6895349,
+      "sha256": "b36ee9bceca01479fda61fe84d9efd208bd12ba22f1db58119a44cacf0b913d3"
+    },
+    {
+      "file": "model_8800.pt",
+      "iteration": 8800,
+      "bytes": 6895349,
+      "sha256": "5670fbee684350b239b409672c6a8ba0ad6578e05173b8069bf2d13971013893"
+    },
+    {
+      "file": "model_9000.pt",
+      "iteration": 9000,
+      "bytes": 6895349,
+      "sha256": "15d32e2ed48f712f1df161986edf9763e0dce127c8e97acb59e99c7eff78ebae"
+    },
+    {
+      "file": "model_9200.pt",
+      "iteration": 9200,
+      "bytes": 6895349,
+      "sha256": "5c0490f45a5f809d26ed21ffeca667b46e8578cfbc6c1ba839118aae121431cc"
+    },
+    {
+      "file": "model_9400.pt",
+      "iteration": 9400,
+      "bytes": 6895349,
+      "sha256": "992c56079fe10f847914936ef86440c3dd76b5027b8fcf4b874fb37e5aea3679"
+    },
+    {
+      "file": "model_9600.pt",
+      "iteration": 9600,
+      "bytes": 6895349,
+      "sha256": "3d102abab771193a7cdbfad6bc68cf9087743f5109acf9b7c543ae89290ba804"
+    },
+    {
+      "file": "model_9800.pt",
+      "iteration": 9800,
+      "bytes": 6895349,
+      "sha256": "c40ca7dc10bb8a766ab2ab065451f23a4cdf6e6a36b224306c234bfa3c60598c"
+    },
+    {
+      "file": "model_10000.pt",
+      "iteration": 10000,
+      "bytes": 6895447,
+      "sha256": "624366888e1588e58546e7b8a7f7b67691931830788a95bf43c032e860de2b1f"
+    },
+    {
+      "file": "model_10200.pt",
+      "iteration": 10200,
+      "bytes": 6895447,
+      "sha256": "afd6637289459e458cf4a9244d306e6bd4bcd3e1d1365fc9fa8299d956536750"
+    },
+    {
+      "file": "model_10400.pt",
+      "iteration": 10400,
+      "bytes": 6895447,
+      "sha256": "a7886bb538c5897d98a0e3d3cf976fb38d196d615c431c92fb5905c16898b1c6"
+    },
+    {
+      "file": "model_10600.pt",
+      "iteration": 10600,
+      "bytes": 6895447,
+      "sha256": "e7cac6648f16c358724abca3bffc986481be0490e64d9c80adcc4933c6f7ec73"
+    },
+    {
+      "file": "model_10800.pt",
+      "iteration": 10800,
+      "bytes": 6895447,
+      "sha256": "6b700324e70e6d6af369084890ba403c0f243df56b9c448661d6015d029e5072"
+    },
+    {
+      "file": "model_11000.pt",
+      "iteration": 11000,
+      "bytes": 6895447,
+      "sha256": "45e8e4c62724730ece0526d3f65884946a6b71eb00b6fe2bbbf67df0c7ee52e7"
+    },
+    {
+      "file": "model_11200.pt",
+      "iteration": 11200,
+      "bytes": 6895447,
+      "sha256": "e24f292adc8cf26e66d958730a3957165b3c7684a787c25fbf9cba023c592df0"
+    },
+    {
+      "file": "model_11400.pt",
+      "iteration": 11400,
+      "bytes": 6895447,
+      "sha256": "683a71e765183d24402f9c3cce277ea74499fcd50c96e54aba53d5cbdafa93f2"
+    },
+    {
+      "file": "model_11600.pt",
+      "iteration": 11600,
+      "bytes": 6895447,
+      "sha256": "6d0b41f524c5957d2fca1803c3f1bebad7ff8ef61ebcf003ee08e180980c1d0c"
+    },
+    {
+      "file": "model_11800.pt",
+      "iteration": 11800,
+      "bytes": 6895447,
+      "sha256": "542144c8bb4f729af0acaa97f88c940cef4b184f736d0af9a2163d45387a4cfe"
+    },
+    {
+      "file": "model_12000.pt",
+      "iteration": 12000,
+      "bytes": 6895447,
+      "sha256": "297050f09e151a5d97de8abdc7f440723f0918104894596398878c189f13e370"
+    },
+    {
+      "file": "model_12200.pt",
+      "iteration": 12200,
+      "bytes": 6895447,
+      "sha256": "710287e6d3f6509dcb784ccfa656d88961f2f180e42b8ec0bd3c9ef57abc95d4"
+    },
+    {
+      "file": "model_12400.pt",
+      "iteration": 12400,
+      "bytes": 6895447,
+      "sha256": "27fb7e04b4184d92050e93ce00d1cee4332fc97db520a383b01e27381f6d7b94"
+    },
+    {
+      "file": "model_12600.pt",
+      "iteration": 12600,
+      "bytes": 6895447,
+      "sha256": "f832b770a3f2c671d2d84077adb80711ef60cac5ad3adb99539e3b7e0289c4b7"
+    }
+  ],
+  "tensorboard_snapshots": [
+    {
+      "file": "events.out.tfevents.1794058173.3eeb8857e6f2.250063.0",
+      "source_prefix_bytes": 26101832,
+      "complete_record_bytes": 26101832,
+      "sha256": "2e60448d1118c018d734f6c266c6b729c85aa680f44c7b30cd58dd2a39ce9903"
+    }
+  ],
+  "versions": {
+    "peginsert": "0.1.0",
+    "isaaclab": "3.0.0",
+    "isaacsim": "6.2.0.0",
+    "newton": "1.6.1",
+    "mujoco": "3.12.0",
+    "mujoco-warp": "3.12.0",
+    "torch": "2.11.0+cu130",
+    "torchvision": "0.26.0+cu130",
+    "rsl-rl-lib": "5.5.1",
+    "numpy": "2.5.4",
+    "warp-lang": "1.17.0"
+  },
+  "python": "3.12.14",
+  "platform": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "original_command": [
+    "uv",
+    "run",
+    "isaaclab",
+    "train",
+    "--task",
+    "PegInset",
+    "--rl_library",
+    "rsl_rl",
+    "--num_envs",
+    "4096",
+    "--max_iterations",
+    "15000",
+    "--seed",
+    "42",
+    "--viz",
+    "none",
+    "physics=newton_mjwarp"
+  ],
+  "resume_scope": {
+    "restored": [
+      "actor",
+      "critic",
+      "observation normalization",
+      "optimizer",
+      "iteration"
+    ],
+    "not_saved": [
+      "environment state",
+      "reset-state bank",
+      "success monitor histories",
+      "sampler state",
+      "curriculum state",
+      "random generator states",
+      "logger counters"
+    ]
+  }
+}

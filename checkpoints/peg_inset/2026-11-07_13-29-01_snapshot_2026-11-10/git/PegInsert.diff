@@ -1,0 +1,57 @@
+--- git commit ---
+09ce3aedf9ec297d6f8d0da566833e159117f2dc
+
+
+--- git status ---
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	scripts/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/README.md b/README.md
+index 4a8e158..0b7a4ec 100644
+--- a/README.md
++++ b/README.md
+@@ -40,6 +40,31 @@ uv run isaaclab play --task PegInset --rl_library rsl_rl --checkpoint <checkpoin
+ uv run python -m unittest discover -s tests -v
+ ```
+ 
++定量评测已训练模型（正常重力，使用 `play_mode()` 的空中抓持初态和均匀采样）：
++
++```bash
++uv run python scripts/evaluate.py \
++  --checkpoint logs/rsl_rl/peg_inset/<run>/model_14999.pt \
++  --num_envs 16 --episodes_per_env 8 --seed 43 --viz none
++```
++
++默认共评测 128 个完整回合，每个环境各贡献 8 个回合，策略使用确定性的均值动作。
++输出保存在模型目录的 `evaluation/<model>_seed<seed>/`：`summary.json` 为成功率、
++Wilson 95% 区间和终止原因统计，`episodes.jsonl` 为自动重置前采集的逐回合数据，
++`env_config.json` 记录实际评测配置。一个回合可能触发多个终止条件，因此终止原因计数不互斥。
++重复运行同一模型和种子时需用 `--output` 指定新目录，以保留已有结果。
++
++Newton 后端并行容量短测：
++
++```bash
++uv run python scripts/benchmark_capacity.py --envs 256 512 1024 2048 4096
++```
++
++各规模串行运行，使用原训练配置、种子 42、无可视化和全新的模型，每档训练 20 次迭代。
++脚本每约 0.5 秒采样一次 GPU 占用，在首个失败、超时或未完成的档位停止。
++结果写入 `logs/capacity/newton_<时间>/`，包括运行命令、训练日志、GPU 采样、
++TensorBoard 指标摘要和完成状态；容量短测不代表模型已收敛。
++
+ 以下保留原有源码阅读笔记。
+ 
+ ### 从零实现现有的PegInsert任务

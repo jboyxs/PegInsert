@@ -1,0 +1,17 @@
+{
+  "snapshot_time": "2026-11-10T16:10:08.412143+08:00",
+  "iteration": 12659,
+  "progress_fraction": 0.844,
+  "inferred_category_weights": [
+    0.44595341110763687,
+    0.4702453501480108,
+    0.08380126047702208
+  ],
+  "inferred_slots": [
+    14613.001375175045,
+    15408.999633650017,
+    2745.9997033110594
+  ],
+  "fit_max_error": 1.2601239629539407e-07,
+  "required_air_rate_with_other_rates_held_fixed": 0.5525752059021706
+}
