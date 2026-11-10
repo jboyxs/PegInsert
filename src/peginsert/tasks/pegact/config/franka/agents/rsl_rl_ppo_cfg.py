@@ -29,7 +29,7 @@ class PegInsetPPORunnerCfg(RslRlOnPolicyRunnerCfg):
         activation="elu",
     )
     algorithm = RslRlPpoAlgorithmCfg(
-        class_name="PPO",
+        class_name="peginsert.tasks.pegact.config.franka.agents.ppo:PegInsetPPO",
         value_loss_coef=1.0,
         use_clipped_value_loss=True,
         clip_param=0.2,

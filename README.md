@@ -36,6 +36,8 @@ uv run isaaclab play --task PegInset --rl_library rsl_rl --checkpoint <checkpoin
 
 成功或失败终止时，下一状态的势值取零以消除终点残余，因此终止步的塑形项可能为负。无限时域模式下的超时截断保留势值，用于价值自举。每次 reset 从新初态的实时几何初始化历史势值。PPO 与塑形默认共用 `task_cfg.DISCOUNT_FACTOR = 0.995`；运行时覆盖 PPO 的 `agent.algorithm.gamma` 时，应同步设置 `env.rewards.assembly_progress.params.gamma`。设 `env.rewards.assembly_progress.weight=0` 可关闭新增项。
 
+仅发生超时时，环境在重置前将动作后的观测接入策略的五帧历史，PPO 以该历史计算 `V(sₜ₊₁)`，并在训练目标中加入一次 `γV(sₜ₊₁)`。若同一步也触发成功或失败终止，或配置为有限时域，训练目标只使用该步奖励。
+
 动作、观测历史、成功阈值、物理参数、重置课程与 `play_mode()` 来自上游；环境实现不导入 `isaaclab_tasks.contrib.nist`，只复用 Isaac Lab 的通用接口和任务配置工具。移植代码保留原 BSD-3-Clause 版权声明，许可见 `src/peginsert/LICENSE-ISAACLAB`。
 
 无需启动仿真的验证：

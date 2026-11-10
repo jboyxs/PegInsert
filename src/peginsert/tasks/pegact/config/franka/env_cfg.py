@@ -311,6 +311,8 @@ class PegInsetActionsCfg:
 class PegInsetEnvCfg(ManagerBasedRLEnvCfg):
     """Configuration for the Franka PegInset environment."""
 
+    class_type: str = "peginsert.tasks.pegact.env:PegInsetEnv"
+
     scene: PegInsetSceneCfg = PegInsetSceneCfg()
     observations: PegInsetObservationsCfg = PegInsetObservationsCfg()
     events: PegInsetEventCfg = PegInsetEventCfg()
