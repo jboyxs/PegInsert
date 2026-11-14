@@ -1,127 +1,34 @@
-## PegInset（已实现）
+### 实现的任务
+![效果展示](ExampleResource/peg-insertion-scene.png)
+空中抓取销->插到孔中
+4 mm 方销，配套 NIST `rectangular_hole_4mm.usd` 方孔（4 mm 规格，实际孔宽和配合间隙以 USD 模型为准），成功需要同时满足：
 
-已将本地 NIST 源码中的 `PegInsert4MM`（4 mm 方销插入）抽取到 `src/peginsert/`，Gym 任务名为 **`PegInset`**。环境类为 `PegInsetEnvCfg`，PPO 配置类为 `PegInsetPPORunnerCfg`。默认直接使用 4 mm 方销/方孔，无需再指定 `presets=peg_insert_4mm`。
+- 姿态对齐：在目标装配坐标系中，销的 roll、pitch 角分别归一化到 `[-π, π]` 后，绝对值之和小于 `0.025 rad`（约 `1.43°`）；成功判定不单独检查 yaw。
+- 横向对中：销尖相对目标装配位置的 XY 平面距离小于 `0.0025 m`（`2.5 mm`）。
+- 插入到位：销尖相对目标装配位置的有符号 Z 距离小于 `0.001 m`（`1 mm`）。孔口位于该坐标系的 `z = 9 mm`，因此相当于插入深度大于 `8 mm`；代码没有对 Z 距离取绝对值。
 
-```text
-src/peginsert/
-├── __init__.py                         # 注册任务，提供 peginsert 命令
-├── tasks/pegact/
-│   ├── assembly_keypoints.py           # NIST 板、4 mm 方销/孔、Franka 关键点
-│   ├── assembly_profile{,_cfg}.py      # 装配路径采样和配置
-│   ├── config/franka/
-│   │   ├── __init__.py                 # Gym 注册 PegInset
-│   │   ├── env_cfg.py                  # 动作、观测、奖励、终止、课程、物理配置
-│   │   ├── scenes_cfg.py / assets_cfg.py
-│   │   ├── task_cfg.py                 # 从 4 mm 变体提取的具体装配参数
-│   │   └── agents/rsl_rl_ppo_cfg.py
-│   ├── mdp/                           # 本地观测、奖励、终止、事件和课程实现
-│   └── reset/env_cfg.py                # 三种重置策略、碰撞筛选、初态库
-└── utils/                             # 几何、SDF、碰撞检查、重置组合器、采样器
-```
+上述阈值见 `src/peginsert/tasks/pegact/mdp/terminations.py` 和 `src/peginsert/tasks/pegact/config/franka/env_cfg.py`，满足三个条件即触发成功终止，无需额外保持一段时间。
+较为严苛，所以训练出来很♂（
+### 需要的软件和硬件环境
+软件
+Isaac Lab这个任务可以兼容两种物理后端依赖Kit的Isaac Sim PhysX和NV和Google合作的搞出来的Newton
+Newton不依赖Kit在训练和验证时的推理表现都很出色。
+本项目主要采用
+硬件
+用于训练  3080 20G/4090D 24G/3090 24G，（穷学生能搞到这些不错了
+用于evalue
+### PPO+课程学习
+PPO是个好算法（好吧其实on policy数据利用率有点低了，个人感觉SAC的数据利用率更高一些，off policy的优点
+PPO的核心就是用广义优势估计替换策略梯度方法里的G，用策略比替换掉策略梯度方法里的策略输出概率对数，再辅以裁剪，避免更新过大
+至于critic网络，是从时序差分推出来的，但是目标每一轮都是固定的R，R由旧V网络和广义优势相加得到
 
-运行（项目安装后通过 `isaaclab.tasks` 入口自动发现任务）：
-
-项目使用 Python 3.12，已声明 `isaaclab[isaacsim]==3.0.0` 并在 `[tool.uv]` 中保存官方依赖覆盖配置；`uv sync --locked` 会一并安装 Isaac Sim 6.2.0.0 及扩展缓存。
-
-```powershell
-uv sync --locked
-uv run isaaclab list_envs --keyword PegInset
-uv run isaaclab train --task PegInset --rl_library rsl_rl
-uv run isaaclab play --task PegInset --rl_library rsl_rl --checkpoint <checkpoint.pt>
-```
-
-也可用 `uv run peginsert train ...` 调用同一 CLI。默认物理后端仍为上游的 `isaacsim_physx`，需要安装并配置 Isaac Sim；支持以 `physics=physx` 或 `physics=newton_mjwarp` 选择其他后端，运行时也需要对应依赖。USD 资产仍来自 `ISAACLAB_NUCLEUS_DIR/Factory`。
-
-默认奖励包含成功奖励、动作幅度、动作变化、关节力矩和异常终止惩罚，以及稠密奖励 `assembly_progress`。新增项的实际单步贡献为 `2 × (γΦ(s下一步) − Φ(s当前))`，返回值已补偿奖励管理器的步长缩放。势函数为 `Φ = 0.30A + 0.25B + 0.45D`，其中 `A` 为接近孔口分数（距离尺度 50 mm），`B` 为横向与倾角对正分数（尺度 5 mm 和 0.1 rad），`D` 为对正分数乘以插入比例（孔口至装配位置 9 mm）。实现见 `mdp/rewards.py`，参数见 `PegInsetRewardsCfg.assembly_progress`。
-
-成功或失败终止时，下一状态的势值取零以消除终点残余，因此终止步的塑形项可能为负。无限时域模式下的超时截断保留势值，用于价值自举。每次 reset 从新初态的实时几何初始化历史势值。PPO 与塑形默认共用 `task_cfg.DISCOUNT_FACTOR = 0.995`；运行时覆盖 PPO 的 `agent.algorithm.gamma` 时，应同步设置 `env.rewards.assembly_progress.params.gamma`。设 `env.rewards.assembly_progress.weight=0` 可关闭新增项。
-
-仅发生超时时，环境在重置前将动作后的观测接入策略的五帧历史，PPO 以该历史计算 `V(sₜ₊₁)`，并在训练目标中加入一次 `γV(sₜ₊₁)`。若同一步也触发成功或失败终止，或配置为有限时域，训练目标只使用该步奖励。
-
-动作、观测历史、成功阈值、物理参数、重置课程与 `play_mode()` 来自上游；环境实现不导入 `isaaclab_tasks.contrib.nist`，只复用 Isaac Lab 的通用接口和任务配置工具。移植代码保留原 BSD-3-Clause 版权声明，许可见 `src/peginsert/LICENSE-ISAACLAB`。
-
-无需启动仿真的验证：
-
-```powershell
-uv run python -m unittest discover -s tests -v
-```
-
-以下保留原有源码阅读笔记。
-
-### 从零实现现有的PegInsert任务
-
-#### 1. 初步文件组织结构
-
-```text
-src/isaaclab_tutorial/tasks/pegact/
-├── __init__.py                      # 任务族说明
-├── config/franka/
-│   ├── __init__.py                  # gym.register × 3（PegInsert/GearMesh/NutThread）
-│   ├── env_cfg.py                   # ManagerBasedRLEnvCfg + 各 Cfg + play_mode
-│   ├── scene_cfg.py / assets_cfg.py
-│   └── agents/{__init__.py, rsl_rl_ppo_cfg.py}
-├── mdp/{__init__.py, __init__.pyi, actions.py, observations.py, events.py,
-│        rewards.py, terminations.py, geometry.py, task.py, control.py}
-├── reset/{dataset.py, generator.py}  # 可选：预生成合法抓握初始状态
-└── assets/                           # Factory USD（或明确用 ISAACLAB_NUCLEUS_DIR）
-```
-
-#### 2. 参照 nist 现成任务
-
-[nist 源码目录](.venv/Lib/site-packages/isaaclab_tasks/contrib/nist/)
-
-以下说明以当前虚拟环境中的源码为准。`nist` 是基于 Franka Panda 和 NIST 装配板的 Factory 装配任务族，使用 `ManagerBasedRLEnv`。它在 `config/__init__.py` 中只注册一个 Gym 环境 `IsaacContrib-Factory-Franka`，通过 `presets` 切换以下 **12 种任务变体**，默认是 `nut_thread_m16`。
-
-| 任务 | preset 名称 | 目标 |
-| --- | --- | --- |
-| 螺母旋拧（1 种） | `nut_thread_m16` | 将 M16 螺母旋入固定螺栓 |
-| 齿轮装配（3 种） | `gear_mesh_small`、`gear_mesh_medium`、`gear_mesh_large` | 将指定齿轮装到基座轴上，与场景中的其余齿轮啮合 |
-| 圆杆插入（4 种） | `rod_insert_4mm`、`rod_insert_8mm`、`rod_insert_12mm`、`rod_insert_16mm` | 将对应尺寸的圆杆插入圆孔 |
-| 矩形销插入（4 种） | `peg_insert_4mm`、`peg_insert_8mm`、`peg_insert_12mm`、`peg_insert_16mm` | 将对应尺寸的矩形销插入矩形孔，是本项目的主要参考 |
-
-例如选择 `--task IsaacContrib-Factory-Franka presets=peg_insert_4mm`，即可使用 4 mm 矩形销插入配置；物理后端由 `physics` 选择，支持 `isaacsim_physx`（默认）、`physx` 和 `newton_mjwarp`。
-
-文件结构与作用如下（同类文件合并展示）：
-
-```text
-nist/
-├── __init__.py                       # 包说明
-├── config/
-│   ├── __init__.py                   # 注册 Gym 环境，绑定环境配置与训练配置
-│   └── agents/
-│       ├── __init__.py               # 训练配置包入口
-│       └── rsl_rl_ppo_cfg.py         # RSL-RL PPO 网络、学习率、迭代次数等
-├── factory_env_cfg.py                # 总配置：动作、观测、奖励、终止、事件、课程和物理后端
-├── factory_scenes_cfg.py             # 公共场景及 12 种 fixed_asset / held_asset 组合
-├── factory_assets_cfg.py             # 机器人、桌面、装配板、零件的 USD 与物理/接触参数
-├── factory_presets.py                # 按任务选择装配路径、对齐点、抓取点、障碍物等
-├── assembly_keypoints.py             # 零件和机器人上的几何参考点、位姿偏移和抓取尺寸
-├── assembly_profile_cfg.py           # 装配路径分段、旋转及位姿噪声的配置
-├── assembly_profile.py               # 路径插值与位姿采样实现，为重置和成功判定提供几何信息
-├── reset_env_cfg.py                  # 组合重置策略，配置碰撞筛选与初始状态库
-├── mdp/
-│   ├── __init__.py / __init__.pyi     # 延迟导出 MDP 接口及类型声明，复用通用 MDP 项
-│   ├── observations.py              # 不同参考系下的相对位姿与连杆速度
-│   ├── events.py                    # 零件/装配板重置、IK 放置末端、抓取与装配初态生成
-│   ├── rewards.py                   # 动作幅值/变化惩罚、装配成功奖励
-│   ├── terminations.py              # 越界、装配进度上下文及成功终止
-│   └── curriculums.py               # 根据成功率调整难度，插值修改课程参数
-└── utils/
-    ├── __init__.py / __init__.pyi     # 工具接口导出及类型声明
-    ├── event_combinators.py          # 串联重置、按成功率选择策略、收集并采样有效初态
-    ├── reset_state.py               # 读取/恢复机器人与物体状态
-    ├── sampling/                    # sampler 及配置：均匀采样、基于成功率的 Beta 权重采样
-    ├── collision_analyzer.py         # 基于表面点云和 SDF 检查碰撞/穿透
-    ├── collision_analyzer_cfg.py     # 碰撞检查对象、采样点数和距离阈值
-    ├── mesh_ops.py / sdf.py          # 网格转换、表面点采样与有符号距离计算
-    ├── rigid_object_hasher.py        # 读取碰撞几何哈希与相对变换，用于几何复用
-    ├── pose_offset.py               # 位姿偏移及坐标变换工具
-    └── grid_downsample.py           # 网格分桶降采样与特征提取工具
-```
-
-任务运行时，策略根据相对位姿、末端速度、关节位置和上一动作等观测，输出机械臂关节位置增量与夹爪开合指令。奖励以装配成功为主，并惩罚动作、动作变化和关节力矩；成功、超时、越界或关节速度异常会结束回合。
-训练重置会生成并筛选抓握/装配初态，存入状态库后按成功率采样，课程逐步将重力从零恢复至正常值；`play_mode()` 则使用正常重力和统一的空中抓取重置策略进行评估。
-
-实现本项目时，可按 `config/__init__.py → factory_env_cfg.py → factory_scenes_cfg.py / factory_presets.py → mdp/` 的顺序阅读，再参考 `reset_env_cfg.py` 和 `utils/` 实现合法抓握初态。动作直接复用 Isaac Lab 的通用关节动作配置；USD 资产来自 `ISAACLAB_NUCLEUS_DIR/Factory`，不在 `nist` 目录内。
-### 当前思路
-top->down思路从factory_env_cfg.py 的FactoryEnvCfg出发，分模块去构建/抄袭
+课程学习，构造了一个根据初态悬着概率分布，有三个初态重置策略，按难度从高到底分别是：grasp_asset_in_air start_assembled start_grasped_then_assembled
+根据他们的最近的成功概率，去调整环境的重置时选择它们三类的重置概率。同时当平均成功率大于0.8难度开始增加，难度指的时重力大小。
+### 最后的评估
+只评估grasp_asset_in_air这一初态下的场景，seed 12345与训练的seed 45区分
+训练成功率
+![训练成功率](ExampleResource/training-success-metrics.png)
+测试成功率 2000 episodes
+uv run python scripts/evaluate.py --checkpoint logs\rsl_rl\peg_inset\2026-11-13_09-18-28_dense_reward_resume_curriculum_4090_0.7V2\model_36600.pt --headless --episodes 2000 --num_envs 64 --seed 12345
+成功率 0.71左右
+![评估结果（2000 回合）](ExampleResource/evaluation-results-2000-episodes.png)
