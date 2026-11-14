@@ -250,6 +250,7 @@ class reset_end_effector_around_asset(ManagerTermBase):
         pose_range_b: dict[str, tuple[float, float]],
         robot_ik_cfg: SceneEntityCfg,
         ik_iterations: tuple[int, int] = (5, 10),
+        orientation_in_asset_frame: bool = False,
     ) -> None:
         if self.solver is None:
             self.solver = instantiate(self.robot_ik_solver_cfg, env)
@@ -260,6 +261,8 @@ class reset_end_effector_around_asset(ManagerTermBase):
         # for those non_reset_id, we will let ik solve for its current position
         pos_w = fixed_tip_pos_w[env_ids] + samples[:, 0:3]
         quat_w = math_utils.quat_from_euler_xyz(samples[:, 3], samples[:, 4], samples[:, 5])
+        if orientation_in_asset_frame:
+            quat_w = math_utils.quat_mul(fixed_tip_quat_w[env_ids], quat_w)
 
         pos_b[env_ids], quat_b[env_ids] = math_utils.subtract_frame_transforms(
             self.robot.data.root_link_pos_w.torch[env_ids],
