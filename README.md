@@ -1,5 +1,5 @@
 ### 实现的任务
-![效果展示](ExampleResource/peg-insertion-scene.png)
+![效果展示](ExampleResource/peg-insertion-scene.gif)
 空中抓取销->插到孔中
 4 mm 方销，配套 NIST `rectangular_hole_4mm.usd` 方孔（4 mm 规格，实际孔宽和配合间隙以 USD 模型为准），成功需要同时满足：
 
