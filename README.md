@@ -55,7 +55,8 @@ PPO的核心就是用广义优势估计替换策略梯度方法里的G，用策�
 ```powershell
 uv run python scripts/evaluate.py --checkpoint logs\rsl_rl\peg_inset\2026-11-13_09-18-28_dense_reward_resume_curriculum_4090_0.7V2\model_36600.pt --headless --episodes 2000 --num_envs 64 --seed 12345
 ```
-
+可能因为训练时间和算力的限制，目前成功率0.71，也有可能PPO的上限就如此了，因为后面提升很缓慢。
+后面想到的方案有预训练Q网络，提前标定价值（学长给的建议，SAC增加探索性，大力砖飞（继续增加并行规模现在是4096，增加训练时间）
 成功率 0.71左右
 
 ![评估结果（2000 回合）](ExampleResource/evaluation-results-2000-episodes.png)
